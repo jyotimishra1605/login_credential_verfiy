@@ -9,6 +9,7 @@ import csv
 import pandas as pd
 
 def Validate_email(username):
+   #This function is used to validate email Id provided by user.should contain atleast aplhanumeric numbers before and after @ . also atleast 2-3 char after ".".
         if re.search('^[a-z|A-Z][a-z0-9|A-Z]+[\._]?[a-z0-9|A-Z]+[@]\w+[.]\w{2,3}$', username)==None:
             print("Please provide valid Email ID.")
             return False
@@ -22,6 +23,7 @@ def Validate_email(username):
                 return False
 
 def Validate_password(password):
+    #this is used to check valid password. containing atleast one uppercase, one lower case, one number and one special char with no spcaes inbetween or anywhere
     lower_case= re.search('[a-z]', password)
     upper_case= re.search('[A-Z]', password)
     numeric= re.search('[0-9]', password)
@@ -41,6 +43,7 @@ def Validate_password(password):
 
     
 def Register(username,password):
+      #After validating username and password, this data is stored in csv file.
         if Validate_email(username)==True and Validate_password(password)==True:
             print("Great! You have been registered")
             df = pd.DataFrame({'EmailId':[username], 'PWD': [password]})
@@ -48,6 +51,7 @@ def Register(username,password):
             
             
 def Login(username,password):
+      #if already register, this code will check wether registered before. if not it wont login
         df=pd.read_csv("credentials.csv")
         df = df[df['EmailId'].str.contains(username)]
         df= df[df['PWD'].str.contains(password)]
@@ -60,6 +64,7 @@ def Login(username,password):
 
 
 def Retrieve(username):
+        #if user has forgotten password this will reterive password using email id
                 df=pd.read_csv("credentials.csv")
                 df = df[df['EmailId'].str.contains(username,case=False)]
                 print(df)
@@ -70,6 +75,7 @@ def Retrieve(username):
 
                     
 def Reset(username):
+       #if user want to reset password, this function will ask user its username ..if registered.. it will ask to change password and store data .
     df=pd.read_csv("credentials.csv")
     dF = df[df['EmailId'].str.contains(username,case=False)]
     if not dF.empty:
